@@ -14,4 +14,6 @@ Technologies used include
 2. Room to store saved data
 3. Dependency injection to create retrofit and room dependencies
 4. MVVM Archtecture
+5. Diff Util
+6. viewBinding
 
