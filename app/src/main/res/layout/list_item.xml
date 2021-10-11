@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+
+    <ImageView
+        android:id="@+id/newsImageViewId"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".5"
+        app:srcCompat="@drawable/valeriia_bugaiova__pphgehz1uk_unsplash" />
+
+    <TextView
+        android:id="@+id/sourceTextViewId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Source"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintWidth_percent=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newsImageViewId" />
+
+    <TextView
+        android:id="@+id/newsTitleTextViewId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Title"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newsImageViewId"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/newsContentTextViewId"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="News Content"
+        app:layout_constraintBottom_toTopOf="@+id/newsPublishedDateTextViewId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newsImageViewId"
+        app:layout_constraintTop_toBottomOf="@+id/newsTitleTextViewId" />
+
+    <TextView
+        android:id="@+id/newsPublishedDateTextViewId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Published at"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/sourceTextViewId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sourceTextViewId" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sourceTextViewId" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

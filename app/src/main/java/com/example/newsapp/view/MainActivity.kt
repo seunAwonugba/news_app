@@ -21,7 +21,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // set up bottom nav with nav controller
-        binding.bottomNavigationView.setupWithNavController(binding.fragmentContainerView.findNavController())
+        binding.bottomNavigationView.setupWithNavController(
+            binding.fragmentContainerView.findNavController()
+        )
 
     }
 }

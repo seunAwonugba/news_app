@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 class TypeConverter {
 
-    //store source data class to DB with the help of TYpeconverters
+    //store source data class to DB with the help of Type converters
     @TypeConverter
     fun convertSourceToJSONObject(source:Source) : String{
         return JSONObject().apply {
