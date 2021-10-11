@@ -9,6 +9,9 @@ import javax.inject.Inject
 
 
 //Note this implements test repository
+
+//Also as against creating an instance of DB in the repository to access the Functions in DAO
+//DI takes care of that for us by just injecting the news app DAO
 class MainRepository @Inject constructor(
     private val apiInterface : ApiServiceInterface,
     private val newsAppDao: NewsAppDao
