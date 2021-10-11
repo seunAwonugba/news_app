@@ -1,6 +1,7 @@
 package com.example.newsapp.adapters
 
 import android.view.LayoutInflater
+import android.view.OnReceiveContentListener
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -78,9 +79,22 @@ class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
         holder.publishedDate.text = currentNews.publishedAt
         holder.source.text = currentNews.source.name
         holder.content.text = currentNews.content
+
+        holder.itemView.setOnClickListener {
+            listItemClickListener?.let {
+                it(currentNews)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return news.size
+    }
+
+    //Implement onclick listener
+    private var listItemClickListener : ((Article) -> Unit)? = null
+
+    fun setListItemClickListener(listener: (Article) -> Unit){
+        listItemClickListener = listener
     }
 }
