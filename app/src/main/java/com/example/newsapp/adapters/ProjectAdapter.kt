@@ -91,7 +91,7 @@ class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
         return news.size
     }
 
-    //Implement onclick listener
+    //Implement onclick listeners
     private var listItemClickListener : ((Article) -> Unit)? = null
 
     fun setListItemClickListener(listener: (Article) -> Unit){
