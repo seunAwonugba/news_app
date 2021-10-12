@@ -5,7 +5,10 @@ import androidx.room.Room
 import com.example.newsapp.api.ApiServiceInterface
 import com.example.newsapp.constants.Constants.BASE_URL
 import com.example.newsapp.constants.Constants.DATABASE_NAME
+import com.example.newsapp.db.NewsAppDao
 import com.example.newsapp.db.NewsAppDataBase
+import com.example.newsapp.repository.MainRepository
+import com.example.newsapp.repository.TestRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -63,4 +66,14 @@ object NewsAppModule {
     @Singleton
     @Provides
     fun provideNewsAppDaoInModule(dataBase: NewsAppDataBase) = dataBase.instanceOfNewsAppDaoInDB()
+
+    /**
+     * Provide repository to be injected into view model
+     */
+
+    @Singleton
+    @Provides
+    fun provideRepositoryInModule(
+        apiServiceInterface: ApiServiceInterface, newsAppDao: NewsAppDao
+    ) : TestRepository = MainRepository(apiServiceInterface, newsAppDao)
 }
