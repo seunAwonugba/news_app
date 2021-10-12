@@ -1,7 +1,6 @@
 package com.example.newsapp.adapters
 
 import android.view.LayoutInflater
-import android.view.OnReceiveContentListener
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -31,14 +30,6 @@ class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
             source = itemView.findViewById(R.id.sourceTextViewId)
             publishedDate = itemView.findViewById(R.id.newsPublishedDateTextViewId)
         }
-
-//        fun bindingFunction(article: Article){
-//            titleTextView.text = article.title
-//            content.text = article.content
-//            source.text = article.source.name
-//            publishedDate.text = article.publishedAt
-//
-//        }
     }
 
     private val diffCallBack = object : DiffUtil.ItemCallback<Article>(){

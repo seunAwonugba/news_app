@@ -26,29 +26,4 @@ abstract class NewsAppDataBase : RoomDatabase() {
      * repository, you must create a manuel to tell dagger how to create it
      */
 
-    //create an instance of the database
-//
-//    companion object{
-//
-//        //@Volatile to ensure visibility of this DB within threads, all threads know when
-//        //the instance of this DB is created
-//        @Volatile
-//        private var instanceOfDB : NewsAppDataBase? = null
-//        //This ensures only a single instance of our DB at once
-//        private val LOCK = Any()
-//
-//        //Invoke function is called when ever you initialise the DB class
-//        operator fun invoke(context: Context) = instanceOfDB ?: synchronized(LOCK){
-//            //to ensure no other thread initialises the DB while we have already initialised it
-//            instanceOfDB ?: createDB(context).also{
-//                instanceOfDB = it
-//            }
-//        }
-//
-//        private fun createDB(context: Context) = Room.databaseBuilder(
-//            context.applicationContext,
-//            NewsAppDataBase::class.java,
-//            "news_app.db"
-//        ).build()
-//    }
 }
