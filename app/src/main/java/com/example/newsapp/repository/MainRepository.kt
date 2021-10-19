@@ -30,7 +30,7 @@ class MainRepository @Inject constructor(
                 ApiCallErrorHandler.Error(receivedApiResponse.message())
             }
         } catch (e: Exception){
-            ApiCallErrorHandler.Error(e.message ?: "An Error Occurred fetching data from the API ")
+            ApiCallErrorHandler.Error(e.message ?: " An Error Occurred fetching data from the API ")
         }
     }
 

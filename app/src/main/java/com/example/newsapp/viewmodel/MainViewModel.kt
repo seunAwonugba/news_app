@@ -1,5 +1,6 @@
 package com.example.newsapp.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +19,8 @@ class MainViewModel @Inject constructor(
     private var repository : TestRepository
 ) : ViewModel() {
 
-    var breakingNews : MutableLiveData<ApiCallErrorHandler<NewsDataClass>> = MutableLiveData()
+    private val _breakingNews : MutableLiveData<ApiCallErrorHandler<NewsDataClass>> = MutableLiveData()
+    val breakingNews : LiveData<ApiCallErrorHandler<NewsDataClass>> = _breakingNews
 
     //Implement Pagination here
     var newsPagination = 1
@@ -27,9 +29,9 @@ class MainViewModel @Inject constructor(
     fun getBreakingNewsInVM(countryCode: String){
         viewModelScope.launch {
             //Before making the network call, lets emit the loading state to live data
-            breakingNews.postValue(ApiCallErrorHandler.Loading())
+            _breakingNews.postValue(ApiCallErrorHandler.Loading())
             val breakingNewsResponse = repository.getDataFromApiInTestRepository(countryCode, newsPagination)
-            breakingNews.value = breakingNewsResponse
+            _breakingNews.postValue(breakingNewsResponse)
         }
     }
 }
