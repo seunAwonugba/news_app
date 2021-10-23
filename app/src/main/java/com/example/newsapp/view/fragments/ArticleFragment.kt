@@ -7,8 +7,9 @@ import androidx.fragment.app.viewModels
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentArticleBinding
 import com.example.newsapp.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ArticleFragment : Fragment(R.layout.fragment_article) {
     private lateinit var binding: FragmentArticleBinding
 

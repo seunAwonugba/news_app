@@ -16,7 +16,7 @@ import com.example.newsapp.dataclass.Article
 //Diff util recyclerview without view binding because i need just one recyclerview adapter
 
 class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
-    inner class MyViewHolder(var itemView : View) : RecyclerView.ViewHolder(itemView){
+    inner class MyViewHolder(var itemView2 : View) : RecyclerView.ViewHolder(itemView2){
         var newsImageView : ImageView
         var titleTextView : TextView
         var content : TextView
@@ -61,7 +61,7 @@ class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentNews = news[position]
 
-        holder.itemView.apply {
+        holder.itemView2.apply {
             Glide.with(this)
                 .load(currentNews.urlToImage)
                 .into(holder.newsImageView)

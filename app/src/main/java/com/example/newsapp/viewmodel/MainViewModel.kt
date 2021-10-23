@@ -9,6 +9,7 @@ import com.example.newsapp.repository.TestRepository
 import com.example.newsapp.utils.ApiCallErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 //Please note i extend the test view model reason being that its an interface and i can easily
@@ -20,13 +21,17 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _breakingNews : MutableLiveData<ApiCallErrorHandler<NewsDataClass>> = MutableLiveData()
-    val breakingNews : LiveData<ApiCallErrorHandler<NewsDataClass>> = _breakingNews
+    var breakingNews : LiveData<ApiCallErrorHandler<NewsDataClass>> = _breakingNews
 
     //Implement Pagination here
     var newsPagination = 1
 
+    init {
+        getBreakingNewsInVM("us")
+    }
+
     //Implement the function that now executes API call
-    fun getBreakingNewsInVM(countryCode: String){
+    private fun getBreakingNewsInVM(countryCode: String){
         viewModelScope.launch {
             //Before making the network call, lets emit the loading state to live data
             _breakingNews.postValue(ApiCallErrorHandler.Loading())

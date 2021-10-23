@@ -21,7 +21,7 @@ class MainRepository @Inject constructor(
         pageNumber: Int
     ): ApiCallErrorHandler<NewsDataClass> {
         return try {
-            val receivedApiResponse = apiInterface. getHeadlineNewsInInterface(countryCode, pageNumber)
+            val receivedApiResponse = apiInterface.getHeadlineNewsInInterface(countryCode, pageNumber)
             val receivedApiResult = receivedApiResponse.body()
 
             if (receivedApiResponse.isSuccessful && receivedApiResult != null) {

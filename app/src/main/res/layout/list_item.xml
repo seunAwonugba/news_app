@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/newsImageViewId"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="90dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,10 +24,9 @@
         android:layout_marginTop="8dp"
         android:text="Source"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintWidth_percent=".5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newsImageViewId" />
+        app:layout_constraintTop_toBottomOf="@+id/newsImageViewId"
+        app:layout_constraintWidth_percent=".5" />
 
     <TextView
         android:id="@+id/newsTitleTextViewId"
@@ -37,7 +36,6 @@
         android:text="Title"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/newsImageViewId"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,9 +46,8 @@
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:text="News Content"
-        app:layout_constraintBottom_toTopOf="@+id/newsPublishedDateTextViewId"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/newsImageViewId"
         app:layout_constraintTop_toBottomOf="@+id/newsTitleTextViewId" />
@@ -59,24 +56,12 @@
         android:id="@+id/newsPublishedDateTextViewId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Published at"
-        android:textSize="16sp"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/sourceTextViewId"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sourceTextViewId" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Published at"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sourceTextViewId" />
+        app:layout_constraintTop_toBottomOf="@+id/sourceTextViewId"
+        app:layout_constraintWidth_percent=".5"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

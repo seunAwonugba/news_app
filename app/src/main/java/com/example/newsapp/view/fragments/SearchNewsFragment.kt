@@ -7,7 +7,9 @@ import androidx.fragment.app.viewModels
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentSearchNewsBinding
 import com.example.newsapp.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     private lateinit var binding: FragmentSearchNewsBinding
 
