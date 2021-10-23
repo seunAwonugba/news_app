@@ -9,4 +9,6 @@ interface TestRepository {
     //it in the API Interface, just same we we initialised the country code and pageNumber
     //But these ones will be dynamic not constants
     suspend fun getDataFromApiInTestRepository(countryCode : String, pageNumber : Int) : ApiCallErrorHandler<NewsDataClass>
+
+    suspend fun searchDataFromApiInTestRepository(searchQuery : String, pageNumber: Int) : ApiCallErrorHandler<NewsDataClass>
 }

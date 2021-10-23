@@ -34,6 +34,25 @@ class MainRepository @Inject constructor(
         }
     }
 
+    override suspend fun searchDataFromApiInTestRepository(
+        searchQuery: String,
+        pageNumber: Int
+    ): ApiCallErrorHandler<NewsDataClass> {
+        return try {
+            val searchResponse = apiInterface.getAllNewsForSearchInInterface(searchQuery, pageNumber)
+            val searchResponseBody = searchResponse.body()
+
+            if (searchResponse.isSuccessful && searchResponseBody != null) {
+                ApiCallErrorHandler.Success(searchResponseBody)
+            } else {
+                ApiCallErrorHandler.Error(searchResponse.message())
+            }
+        } catch (e: Exception){
+            ApiCallErrorHandler.Error(e.message ?: " An Error Occurred fetching data from the API ")
+        }
+    }
+
+
     suspend fun upsertInMainRepository(article: Article) = newsAppDao.upsert(article)
 
     fun getNewsFromDBInMainRepository() = newsAppDao.getAllDataInDB()
