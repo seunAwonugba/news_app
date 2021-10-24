@@ -6,4 +6,5 @@ object Constants {
     const val EVERY_NEWS_END_POINT = "everything"
     const val API_KEY = "a8b26c33dbdd48f1b6dbbc7eb43dd0c9"
     const val DATABASE_NAME = "news_app_db"
+    const val SEARCH_DELAY = 500L
 }

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import com.example.newsapp.R
 import com.example.newsapp.dataclass.Article
 
@@ -16,20 +16,12 @@ import com.example.newsapp.dataclass.Article
 //Diff util recyclerview without view binding because i need just one recyclerview adapter
 
 class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
-    inner class MyViewHolder(var itemView2 : View) : RecyclerView.ViewHolder(itemView2){
-        var newsImageView : ImageView
-        var titleTextView : TextView
-        var content : TextView
-        var source : TextView
-        var publishedDate : TextView
-
-        init {
-            newsImageView = itemView.findViewById(R.id.newsImageViewId)
-            titleTextView = itemView.findViewById(R.id.newsTitleTextViewId)
-            content = itemView.findViewById(R.id.newsContentTextViewId)
-            source = itemView.findViewById(R.id.sourceTextViewId)
-            publishedDate = itemView.findViewById(R.id.newsPublishedDateTextViewId)
-        }
+    inner class MyViewHolder(var listItemView : View) : RecyclerView.ViewHolder(listItemView){
+        var newsImageView : ImageView = itemView.findViewById(R.id.newsImageViewId)
+        var titleTextView : TextView = itemView.findViewById(R.id.newsTitleTextViewId)
+        var content : TextView = itemView.findViewById(R.id.newsContentTextViewId)
+        var source : TextView = itemView.findViewById(R.id.sourceTextViewId)
+        var publishedDate : TextView = itemView.findViewById(R.id.newsPublishedDateTextViewId)
     }
 
     private val diffCallBack = object : DiffUtil.ItemCallback<Article>(){
@@ -61,10 +53,9 @@ class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentNews = news[position]
 
-        holder.itemView2.apply {
-            Glide.with(this)
-                .load(currentNews.urlToImage)
-                .into(holder.newsImageView)
+        holder.newsImageView.load(currentNews.urlToImage){
+            crossfade(true)
+            crossfade(1000)
         }
         holder.titleTextView.text = currentNews.title
         holder.publishedDate.text = currentNews.publishedAt

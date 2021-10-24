@@ -9,7 +9,6 @@ import com.example.newsapp.repository.TestRepository
 import com.example.newsapp.utils.ApiCallErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 //Please note i extend the test view model reason being that its an interface and i can easily
@@ -24,7 +23,7 @@ class MainViewModel @Inject constructor(
     var breakingNews : LiveData<ApiCallErrorHandler<NewsDataClass>> = _breakingNews
 
     private val _searchNews : MutableLiveData<ApiCallErrorHandler<NewsDataClass>> = MutableLiveData()
-    var searchNews : LiveData<ApiCallErrorHandler<NewsDataClass>> = _breakingNews
+    var searchNews : LiveData<ApiCallErrorHandler<NewsDataClass>> = _searchNews
 
     //Implement Pagination here
     var newsPagination = 1
@@ -45,12 +44,12 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun searchNewsInVM(searchQuery: String){
+    fun searchNewsInVM(searchQuery: String){
         viewModelScope.launch {
             //Before making the network call, lets emit the loading state to live data
             _searchNews.postValue(ApiCallErrorHandler.Loading())
-            val breakingNewsResponse = repository.searchDataFromApiInTestRepository(searchQuery,searchNewsPagination)
-            _searchNews.postValue(breakingNewsResponse)
+            val searchNewsResponse = repository.searchDataFromApiInTestRepository(searchQuery,searchNewsPagination)
+            _searchNews.postValue(searchNewsResponse)
         }
     }
 }

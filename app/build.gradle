@@ -1,10 +1,13 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id("kotlin-parcelize")
+    id 'androidx.navigation.safeargs'
 }
 
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+
 
 
 android {
@@ -64,7 +67,7 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
 
     //kotlin coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
     //View model KTX
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-rc01"
@@ -94,24 +97,16 @@ dependencies {
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
 
-    //Glide
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-
-//    //NewsAppDataBase_Impl does not exist
-//    implementation "android.arch.lifecycle:extensions:1.1.1"
-//    kapt "android.arch.lifecycle:compiler:1.1.1"
-//
-//    implementation "androidx.room:room-runtime:2.2.5"
-//    implementation 'android.arch.persistence.room:runtime:2.2.5'
-//    kapt 'android.arch.persistence.room:compiler:2.2.5'
 
     // Dependencies for Room DataBase
     kapt "androidx.room:room-compiler:2.3.0"
     implementation "androidx.room:room-runtime:2.3.0"
     implementation "androidx.room:room-ktx:2.3.0"
     androidTestImplementation "androidx.room:room-testing:2.3.0"
-
     implementation 'androidx.room:room-common:2.3.0'
+
+    //coil
+    implementation("io.coil-kt:coil:1.4.0")
+
 
 }
