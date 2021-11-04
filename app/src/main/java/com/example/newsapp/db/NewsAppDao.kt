@@ -10,7 +10,7 @@ interface NewsAppDao {
     //Function to add data to database and also update database by its ID, hence the LONG return
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(article: Article) : Long
+    suspend fun upsert(article: Article)
 
     //Function to retrieve data from database, its used to update views
 

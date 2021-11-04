@@ -5,12 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.newsapp.R
 import com.example.newsapp.dataclass.Article
+import com.example.newsapp.view.fragments.BreakingNewsFragmentDirections
 
 
 //Diff util recyclerview without view binding because i need just one recyclerview adapter
@@ -59,7 +61,7 @@ class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
         }
         holder.titleTextView.text = currentNews.title
         holder.publishedDate.text = currentNews.publishedAt
-        holder.source.text = currentNews.source.name
+        holder.source.text = currentNews.source?.name
         holder.content.text = currentNews.content
 
         holder.itemView.setOnClickListener {

@@ -1,50 +1,42 @@
 package com.example.newsapp.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapters.ProjectAdapter
 import com.example.newsapp.databinding.FragmentBreakingNewsBinding
-import com.example.newsapp.dataclass.Article
 import com.example.newsapp.utils.ApiCallErrorHandler
 import com.example.newsapp.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.recyclerview.widget.DividerItemDecoration
-
-
 
 
 @AndroidEntryPoint
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
-    private lateinit var binding: FragmentBreakingNewsBinding
+    private var _binding: FragmentBreakingNewsBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel : MainViewModel by viewModels()
 
     private lateinit var projectAdapter: ProjectAdapter
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentBreakingNewsBinding.bind(view)
+        _binding = FragmentBreakingNewsBinding.bind(view)
         setUpRecyclerView()
 
         projectAdapter.setListItemClickListener {
-            findNavController().navigate(
-                R.id.action_breakingNewsFragment_to_articleFragment
-            )
+            val passData = BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(it)
+            findNavController().navigate(passData)
         }
 
         viewModel.breakingNews.observe(
-            viewLifecycleOwner, Observer { response ->
-                Log.d("TAG", "View Model Success : ${response.data?.articles}")
+            viewLifecycleOwner, { response ->
                 when(response){
                     is ApiCallErrorHandler.Success -> {
                         hideProgressBar()
@@ -84,10 +76,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                     DividerItemDecoration.VERTICAL
                 )
             )
-
-
         }
-
     }
 
     private fun displayProgressBar(){
@@ -96,6 +85,11 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     private fun hideProgressBar(){
         binding.progressBar.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

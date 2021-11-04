@@ -25,7 +25,9 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
-    private lateinit var binding: FragmentSearchNewsBinding
+    private var _binding: FragmentSearchNewsBinding? = null
+    private val binding get() = _binding!!
+
 
     private val viewModel : MainViewModel by viewModels()
 
@@ -33,13 +35,13 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSearchNewsBinding.bind(view)
+        _binding = FragmentSearchNewsBinding.bind(view)
         setUpRecyclerView()
+        fetchBreakingNews()
 
         projectAdapter.setListItemClickListener {
-            findNavController().navigate(
-                R.id.action_searchNewsFragment_to_articleFragment
-            )
+            val passData = SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleFragment(it)
+            findNavController().navigate(passData)
         }
 
         //implement search to search
@@ -58,7 +60,33 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
         viewModel.searchNews.observe(
             viewLifecycleOwner, Observer { response ->
-                Log.d("TAG", "View Model Success : ${response.data?.articles}")
+                when(response){
+                    is ApiCallErrorHandler.Success -> {
+                        hideProgressBar()
+                        response.data?.articles?.let {
+                            projectAdapter.news = it
+                        }
+                    }
+
+                    is ApiCallErrorHandler.Error -> {
+                        hideProgressBar()
+                        response.message?.let {
+                            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+                        }
+                    }
+
+                    is ApiCallErrorHandler.Loading -> {
+                        displayProgressBar()
+
+                    }
+                }
+            }
+        )
+    }
+
+    private fun fetchBreakingNews(){
+        viewModel.breakingNews.observe(
+            viewLifecycleOwner, Observer { response ->
                 when(response){
                     is ApiCallErrorHandler.Success -> {
                         hideProgressBar()
@@ -103,5 +131,10 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     private fun hideProgressBar(){
         binding.searchFragmentProgressBarId.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

@@ -1,5 +1,6 @@
 package com.example.newsapp.repository
 
+import androidx.lifecycle.LiveData
 import com.example.newsapp.api.ApiServiceInterface
 import com.example.newsapp.dataclass.Article
 import com.example.newsapp.dataclass.NewsDataClass
@@ -52,14 +53,15 @@ class MainRepository @Inject constructor(
         }
     }
 
+    override suspend fun upsert(article: Article) {
+        return newsAppDao.upsert(article)
+    }
 
-    suspend fun upsertInMainRepository(article: Article) = newsAppDao.upsert(article)
+    override fun getNewsFromDBInMainRepository() : LiveData<List<Article>> {
+        return newsAppDao.getAllDataInDB()
+    }
 
-    fun getNewsFromDBInMainRepository() = newsAppDao.getAllDataInDB()
-
-    suspend fun deleteNewsInDBFromRepo(article: Article) = newsAppDao.deleteNewsFromDataBase(article)
-
-
-
-
+    override suspend fun deleteNewsInDBFromRepo(article: Article) {
+        return newsAppDao.deleteNewsFromDataBase(article)
+    }
 }

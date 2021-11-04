@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.newsapp.dataclass.Article
 import com.example.newsapp.dataclass.NewsDataClass
 import com.example.newsapp.repository.TestRepository
 import com.example.newsapp.utils.ApiCallErrorHandler
@@ -51,5 +52,16 @@ class MainViewModel @Inject constructor(
             val searchNewsResponse = repository.searchDataFromApiInTestRepository(searchQuery,searchNewsPagination)
             _searchNews.postValue(searchNewsResponse)
         }
+    }
+
+    //upsert function
+    fun upsert(article: Article) = viewModelScope.launch {
+        repository.upsert(article)
+    }
+
+    fun getDataFromDB() = repository.getNewsFromDBInMainRepository()
+
+    fun deleteDataFromDB(article: Article) = viewModelScope.launch {
+        repository.deleteNewsInDBFromRepo(article)
     }
 }

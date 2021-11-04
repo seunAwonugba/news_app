@@ -1,5 +1,7 @@
 package com.example.newsapp.repository
 
+import androidx.lifecycle.LiveData
+import com.example.newsapp.dataclass.Article
 import com.example.newsapp.dataclass.NewsDataClass
 import com.example.newsapp.utils.ApiCallErrorHandler
 
@@ -11,4 +13,13 @@ interface TestRepository {
     suspend fun getDataFromApiInTestRepository(countryCode : String, pageNumber : Int) : ApiCallErrorHandler<NewsDataClass>
 
     suspend fun searchDataFromApiInTestRepository(searchQuery : String, pageNumber: Int) : ApiCallErrorHandler<NewsDataClass>
+
+    //just pass only data you want to add to DB
+
+    suspend fun upsert(article: Article)
+
+    //Getting data from DB runs on Livedata normally
+    fun getNewsFromDBInMainRepository() : LiveData<List<Article>>
+
+    suspend fun deleteNewsInDBFromRepo(article: Article)
 }
