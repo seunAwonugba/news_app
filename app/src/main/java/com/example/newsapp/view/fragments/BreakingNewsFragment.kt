@@ -49,6 +49,8 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                         hideProgressBar()
                         response.message?.let {
                             Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+                            if(it == "timeout") Snackbar.make(binding.root, "Slow network, please refresh", Snackbar.LENGTH_LONG).show()
+                            if(it == "Unable to resolve host \"newsapi.org\": No address associated with hostname") Snackbar.make(binding.root, "Please check your network connection and refresh", Snackbar.LENGTH_LONG).show()
                         }
                     }
 

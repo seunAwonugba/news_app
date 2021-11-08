@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.17291666666666666" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_saved_news.xml" value="0.17083333333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_article.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_breaking_news.xml" value="0.1" />

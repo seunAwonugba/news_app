@@ -20,6 +20,6 @@ class TypeConverter {
     @TypeConverter
     fun convertJSONObjectBackToSource(string: String) : Source{
         val json = JSONObject(string)
-        return Source(json.getString("ID"), json.getString("NAME"))
+        return Source(json.optString("ID"), json.optString("NAME"))
     }
 }
