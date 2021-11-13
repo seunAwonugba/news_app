@@ -10,6 +10,7 @@ import com.example.newsapp.repository.TestRepository
 import com.example.newsapp.utils.ApiCallErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 //Please note i extend the test view model reason being that its an interface and i can easily
@@ -39,14 +40,37 @@ class MainViewModel @Inject constructor(
     }
 
     //Implement the function that now executes API call
-    private fun getBreakingNewsInVM(countryCode: String){
+    fun getBreakingNewsInVM(countryCode: String){
         viewModelScope.launch {
             //Before making the network call, lets emit the loading state to live data
             _breakingNews.postValue(ApiCallErrorHandler.Loading())
             val breakingNewsResponse = repository.getDataFromApiInTestRepository(countryCode, newsPagination)
-
-            _breakingNews.postValue(breakingNewsResponse)
+            _breakingNews.postValue(breakingNewsApiResponseHandler(breakingNewsResponse))
         }
+    }
+
+    private fun breakingNewsApiResponseHandler(
+        response: Response<NewsDataClass>
+    ) : ApiCallErrorHandler<NewsDataClass>{
+        val responseBody = response.body()
+        if(response.isSuccessful && responseBody!=null){
+            //when response is successful, increase current page number
+                newsPagination++
+            //originally receivedBreakingNewsResponse will be null at first load
+            if (receivedBreakingNewsResponse == null){
+                receivedBreakingNewsResponse = responseBody
+            }
+            else{
+                val existingFetchedData = receivedBreakingNewsResponse?.articles
+                val newFetchedData = responseBody.articles
+                //At this point change from the generated data class property article List<Articles> to
+                //MutableList<Article>
+                //So the logic is make all ur checks, and finally add to existing list
+                existingFetchedData?.addAll(newFetchedData)
+            }
+            return ApiCallErrorHandler.Success(receivedBreakingNewsResponse ?: responseBody)
+        }
+        return ApiCallErrorHandler.Error(response.message())
     }
 
     fun searchNewsInVM(searchQuery: String){
@@ -54,8 +78,32 @@ class MainViewModel @Inject constructor(
             //Before making the network call, lets emit the loading state to live data
             _searchNews.postValue(ApiCallErrorHandler.Loading())
             val searchNewsResponse = repository.searchDataFromApiInTestRepository(searchQuery,searchNewsPagination)
-            _searchNews.postValue(searchNewsResponse)
+            _searchNews.postValue(searchNewsApiResponseHandler(searchNewsResponse))
         }
+    }
+
+    private fun searchNewsApiResponseHandler(
+        response: Response<NewsDataClass>
+    ) : ApiCallErrorHandler<NewsDataClass>{
+        val responseBody = response.body()
+        if(response.isSuccessful && responseBody!=null){
+            //when response is successful, increase current page number
+            searchNewsPagination++
+            //originally receivedBreakingNewsResponse will be null at first load
+            if (receivedSearchNewsResponse  == null){
+                receivedSearchNewsResponse = responseBody
+            }
+            else{
+                val existingFetchedData = receivedSearchNewsResponse?.articles
+                val newFetchedData = responseBody.articles
+                //At this point change from the generated data class property article List<Articles> to
+                //MutableList<Article>
+                //So the logic is make all ur checks, and finally add to existing list
+                existingFetchedData?.addAll(newFetchedData)
+            }
+            return ApiCallErrorHandler.Success(receivedSearchNewsResponse ?: responseBody)
+        }
+        return ApiCallErrorHandler.Error(response.message())
     }
 
     //upsert function

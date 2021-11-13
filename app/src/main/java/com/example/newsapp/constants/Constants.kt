@@ -7,4 +7,5 @@ object Constants {
     const val API_KEY = "a8b26c33dbdd48f1b6dbbc7eb43dd0c9"
     const val DATABASE_NAME = "news_app_db"
     const val SEARCH_DELAY = 500L
+    const val QUERY_PAGE_SIZE = 20
 }
