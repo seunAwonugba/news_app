@@ -26,10 +26,13 @@ class MainViewModel @Inject constructor(
     private val _searchNews : MutableLiveData<ApiCallErrorHandler<NewsDataClass>> = MutableLiveData()
     var searchNews : LiveData<ApiCallErrorHandler<NewsDataClass>> = _searchNews
 
-    //Implement Pagination here
+    //Implement Pagination here for the two end points
     var newsPagination = 1
-
     var searchNewsPagination = 1
+
+    //create a variable that holds all responses received
+    var receivedBreakingNewsResponse : NewsDataClass? = null
+    var receivedSearchNewsResponse : NewsDataClass? = null
 
     init {
         getBreakingNewsInVM("us")
@@ -41,6 +44,7 @@ class MainViewModel @Inject constructor(
             //Before making the network call, lets emit the loading state to live data
             _breakingNews.postValue(ApiCallErrorHandler.Loading())
             val breakingNewsResponse = repository.getDataFromApiInTestRepository(countryCode, newsPagination)
+
             _breakingNews.postValue(breakingNewsResponse)
         }
     }
