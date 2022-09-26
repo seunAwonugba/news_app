@@ -1,7 +1,6 @@
 package com.example.newsapp.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import androidx.core.widget.addTextChangedListener
@@ -13,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.adapters.ProjectAdapter
-import com.example.newsapp.constants.Constants.QUERY_PAGE_SIZE
+import com.example.newsapp.constants.Constants.PAGE_SIZE
 import com.example.newsapp.constants.Constants.SEARCH_DELAY
 import com.example.newsapp.databinding.FragmentSearchNewsBinding
-import com.example.newsapp.utils.ApiCallErrorHandler
+import com.example.newsapp.utils.Resource
 import com.example.newsapp.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,87 +38,80 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSearchNewsBinding.bind(view)
         setUpRecyclerView()
-        fetchBreakingNews()
+//        fetchBreakingNews()
 
-        projectAdapter.setListItemClickListener {
-            val passData = SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleFragment(it)
-            findNavController().navigate(passData)
-        }
+//        projectAdapter.setListItemClickListener {
+//            val passData = SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleFragment(it)
+//            findNavController().navigate(passData)
+//        }
 
         //implement search to search
-        var job : Job? = null
-        binding.searchFieldId.addTextChangedListener {editable->
-            job?.cancel()
-            job = MainScope().launch {
-                delay(SEARCH_DELAY)
-                editable?.let {
-                    if(editable.toString().isNotEmpty()){
-                        viewModel.searchNewsInVM(editable.toString())
-                    }
-                }
-            }
-        }
+//        var job : Job? = null
+//        binding.searchFieldId.addTextChangedListener {editable->
+//            job?.cancel()
+//            job = MainScope().launch {
+//                delay(SEARCH_DELAY)
+//                editable?.let {
+//                    if(editable.toString().isNotEmpty()){
+//                        viewModel.searchNewsInVM(editable.toString())
+//                    }
+//                }
+//            }
+//        }
 
-        viewModel.searchNews.observe(
-            viewLifecycleOwner, { response ->
-                when(response){
-                    is ApiCallErrorHandler.Success -> {
-                        hideProgressBar()
-                        response.data?.let {
-                            projectAdapter.news = it.articles.toList()
-                            val totalPages = it.totalResults / QUERY_PAGE_SIZE + 2
-                            isLastPage = viewModel.searchNewsPagination == totalPages
-                            if (response.data.status == "error"){
-                                Log.d("ERROR CODE", response.data.status )
-                            }
-                        }
-                    }
-
-                    is ApiCallErrorHandler.Error -> {
-                        hideProgressBar()
-                        response.message?.let {
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-                        }
-                    }
-
-                    is ApiCallErrorHandler.Loading -> {
-                        displayProgressBar()
-
-                    }
-                }
-            }
-        )
+//        viewModel.searchNews.observe(
+//            viewLifecycleOwner
+//        ) { response ->
+//            when (response) {
+//                is Resource.Success -> {
+//                    hideProgressBar()
+//                    response.data?.let {
+//                        projectAdapter.news = it.articles.toList()
+//                        val totalPages = it.totalResults / PAGE_SIZE + 2
+//                        isLastPage = viewModel.searchNewsPagination == totalPages
+//                    }
+//                }
+//
+//                is Resource.Error -> {
+//                    hideProgressBar()
+//                    Snackbar.make(binding.root, response.message?.message.toString(), Snackbar.LENGTH_LONG).show()
+//                }
+//
+//                is Resource.Loading -> {
+//                    displayProgressBar()
+//
+//                }
+//            }
+//        }
     }
 
-    private fun fetchBreakingNews(){
-        viewModel.breakingNews.observe(
-            viewLifecycleOwner, { response ->
-                when(response){
-                    is ApiCallErrorHandler.Success -> {
-                        hideProgressBar()
-                        response.data?.let {
-                            projectAdapter.news = it.articles.toList()
-                            val totalPages = it.totalResults / QUERY_PAGE_SIZE + 2
-                            isLastPage = viewModel.newsPagination == totalPages
-
-                        }
-                    }
-
-                    is ApiCallErrorHandler.Error -> {
-                        hideProgressBar()
-                        response.message?.let {
-                            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-                        }
-                    }
-
-                    is ApiCallErrorHandler.Loading -> {
-                        displayProgressBar()
-
-                    }
-                }
-            }
-        )
-    }
+//    private fun fetchBreakingNews(){
+//        viewModel.headlineNews.observe(
+//            viewLifecycleOwner
+//        ) { response ->
+//            when (response) {
+//                is Resource.Success -> {
+//                    hideProgressBar()
+//                    response.data?.let {
+//                        projectAdapter.news = it.articles.toList()
+//                        val totalPages = it.totalResults / PAGE_SIZE + 2
+//                        isLastPage = viewModel.newsPagination == totalPages
+//
+//                    }
+//                }
+//
+//                is Resource.Error -> {
+//                    hideProgressBar()
+//                    Snackbar.make(binding.root, response.message?.message.toString(), Snackbar.LENGTH_LONG).show()
+//                }
+//
+//                is Resource.Loading -> {
+//                    displayProgressBar()
+//
+//                }
+//            }
+//        }
+//    }
 
     //implement pagination
     var isLoading = false
@@ -135,29 +127,29 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
             }
         }
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-            val visibleItemCount = layoutManager.childCount
-            val totalItemCount = layoutManager.itemCount
-
-            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
-            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
-            val isNotAtBeginning = firstVisibleItemPosition >= 0
-            // always get default response from api
-            val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
-            val shouldPaginate =
-                isNotLoadingAndNotLastPage &&
-                        isAtLastItem &&
-                        isNotAtBeginning &&
-                        isTotalMoreThanVisible &&
-                        isScrolling
-            if(shouldPaginate) {
-                viewModel.searchNewsInVM(binding.searchFieldId.text.toString())
-                isScrolling = false
-            }
-        }
+//        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//            super.onScrolled(recyclerView, dx, dy)
+//            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+//            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+//            val visibleItemCount = layoutManager.childCount
+//            val totalItemCount = layoutManager.itemCount
+//
+//            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+//            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+//            val isNotAtBeginning = firstVisibleItemPosition >= 0
+//            // always get default response from api
+//            val isTotalMoreThanVisible = totalItemCount >= PAGE_SIZE
+//            val shouldPaginate =
+//                isNotLoadingAndNotLastPage &&
+//                        isAtLastItem &&
+//                        isNotAtBeginning &&
+//                        isTotalMoreThanVisible &&
+//                        isScrolling
+//            if(shouldPaginate) {
+//                viewModel.searchNewsInVM(binding.searchFieldId.text.toString())
+//                isScrolling = false
+//            }
+//        }
     }
 
     private fun setUpRecyclerView(){

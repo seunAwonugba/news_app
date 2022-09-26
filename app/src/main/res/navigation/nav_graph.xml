@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/breakingNewsFragment"
-        android:name="com.example.newsapp.view.fragments.BreakingNewsFragment"
+        android:name="com.example.newsapp.view.fragments.HeadlineNewsFragment"
         android:label="Breaking News"
-        tools:layout="@layout/fragment_breaking_news" >
+        tools:layout="@layout/fragment_headline_news" >
         <action
             android:id="@+id/action_breakingNewsFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
@@ -37,8 +37,8 @@
         android:name="com.example.newsapp.view.fragments.ArticleFragment"
         android:label="Articles"
         tools:layout="@layout/fragment_article" >
-        <argument
-            android:name="safeArgsIntent"
-            app:argType="com.example.newsapp.dataclass.Article" />
+<!--        <argument-->
+<!--            android:name="safeArgsIntent"-->
+<!--            app:argType="com.example.newsapp.dataclass.Article" />-->
     </fragment>
 </navigation>

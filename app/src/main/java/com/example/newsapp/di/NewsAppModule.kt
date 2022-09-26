@@ -2,13 +2,13 @@ package com.example.newsapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.newsapp.api.ApiServiceInterface
+import com.example.newsapp.api.WebService
 import com.example.newsapp.constants.Constants.BASE_URL
 import com.example.newsapp.constants.Constants.DATABASE_NAME
 import com.example.newsapp.db.NewsAppDao
 import com.example.newsapp.db.NewsAppDataBase
+import com.example.newsapp.repository.MainRepositoryImpl
 import com.example.newsapp.repository.MainRepository
-import com.example.newsapp.repository.TestRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +29,7 @@ object NewsAppModule {
 
     @Singleton
     @Provides
-    fun provideNewsApiInAppModule(): ApiServiceInterface {
+    fun provideNewsApiInAppModule(): WebService {
 
         val interceptor = HttpLoggingInterceptor()
         interceptor.level= HttpLoggingInterceptor.Level.BODY
@@ -40,17 +40,27 @@ object NewsAppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-            .create(ApiServiceInterface::class.java)
+            .create(WebService::class.java)
 
     }
+
+
+    /**
+     * Provide repository to be injected into view model
+     */
+
+    @Singleton
+    @Provides
+    fun provideRepositoryInModule(
+        webService: WebService,
+        newsAppDao: NewsAppDao
+    ) : MainRepository = MainRepositoryImpl(webService, newsAppDao)
 
     //Room dependencies
 
     @Singleton
     @Provides
-    fun provideMovieAppDataBaseInModule(
-        @ApplicationContext context: Context
-    ) = Room.databaseBuilder(
+    fun provideMovieAppDataBaseInModule(@ApplicationContext context: Context) = Room.databaseBuilder(
         context,
         NewsAppDataBase::class.java,
         DATABASE_NAME
@@ -67,13 +77,4 @@ object NewsAppModule {
     @Provides
     fun provideNewsAppDaoInModule(dataBase: NewsAppDataBase) = dataBase.instanceOfNewsAppDaoInDB()
 
-    /**
-     * Provide repository to be injected into view model
-     */
-
-    @Singleton
-    @Provides
-    fun provideRepositoryInModule(
-        apiServiceInterface: ApiServiceInterface, newsAppDao: NewsAppDao
-    ) : TestRepository = MainRepository(apiServiceInterface, newsAppDao)
 }

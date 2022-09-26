@@ -5,42 +5,40 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.newsapp.R
-import com.example.newsapp.dataclass.Article
-import com.example.newsapp.view.fragments.BreakingNewsFragmentDirections
+import com.example.newsapp.data.remote.NewsDataClass
 
 
 //Diff util recyclerview without view binding because i need just one recyclerview adapter
 
 class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
     inner class MyViewHolder(var listItemView : View) : RecyclerView.ViewHolder(listItemView){
-        var newsImageView : ImageView = itemView.findViewById(R.id.newsImageViewId)
-        var titleTextView : TextView = itemView.findViewById(R.id.newsTitleTextViewId)
-        var content : TextView = itemView.findViewById(R.id.newsContentTextViewId)
-        var source : TextView = itemView.findViewById(R.id.sourceTextViewId)
-        var publishedDate : TextView = itemView.findViewById(R.id.newsPublishedDateTextViewId)
+        var newsImageView : ImageView = itemView.findViewById(R.id.imageId)
+        var titleTextView : TextView = itemView.findViewById(R.id.titleId)
+        var content : TextView = itemView.findViewById(R.id.contentId)
+        var source : TextView = itemView.findViewById(R.id.sourceId)
+        var publishedDate : TextView = itemView.findViewById(R.id.publishedAtId)
     }
 
-    private val diffCallBack = object : DiffUtil.ItemCallback<Article>(){
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+    private val diffCallBack = object : DiffUtil.ItemCallback<NewsDataClass.Article>(){
+        override fun areItemsTheSame(oldItem: NewsDataClass.Article, newItem: NewsDataClass.Article): Boolean {
             //Note in the Article dataclass, by default ID did not come with it we created it
             //so the most unique item in the list will be URL
 
             return oldItem.url == newItem.url
         }
 
-        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
+        override fun areContentsTheSame(oldItem: NewsDataClass.Article, newItem: NewsDataClass.Article): Boolean {
             return newItem == oldItem
         }
     }
 
     private val differ = AsyncListDiffer(this, diffCallBack)
-    var news : List<Article>
+    var news : List<NewsDataClass.Article>
         get() = differ.currentList
         set(value) {
             differ.submitList(value)
@@ -76,9 +74,9 @@ class ProjectAdapter : RecyclerView.Adapter<ProjectAdapter.MyViewHolder>() {
     }
 
     //Implement onclick listeners
-    private var listItemClickListener : ((Article) -> Unit)? = null
+    private var listItemClickListener : ((NewsDataClass.Article) -> Unit)? = null
 
-    fun setListItemClickListener(listener: (Article) -> Unit){
+    fun setListItemClickListener(listener: (NewsDataClass.Article) -> Unit){
         listItemClickListener = listener
     }
 }

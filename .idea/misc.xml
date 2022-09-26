@@ -5,12 +5,13 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/drawable-anydpi/ic_saved_news.xml" value="0.17083333333333334" />
+        <entry key="app/src/main/res/drawable/button_border.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_article.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_breaking_news.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_saved_news.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/fragment_search_news.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/list_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.27009582519531256" />
         <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.22" />
       </map>
     </option>

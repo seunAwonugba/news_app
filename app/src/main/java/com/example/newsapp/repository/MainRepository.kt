@@ -1,71 +1,21 @@
 package com.example.newsapp.repository
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import com.example.newsapp.api.ApiServiceInterface
-import com.example.newsapp.dataclass.Article
-import com.example.newsapp.dataclass.NewsDataClass
-import com.example.newsapp.db.NewsAppDao
-import com.example.newsapp.utils.ApiCallErrorHandler
-import javax.inject.Inject
+import androidx.paging.PagingData
+import com.example.newsapp.data.ui.NewsResponse
+import kotlinx.coroutines.flow.Flow
 
+interface MainRepository {
 
-//Note this implements test repository
-
-//Also as against creating an instance of DB in the repository to access the Functions in DAO
-//DI takes care of that for us by just injecting the news app DAO
-class MainRepository @Inject constructor(
-    private val apiInterface : ApiServiceInterface,
-    private val newsAppDao: NewsAppDao
-    ) : TestRepository {
-    override suspend fun getDataFromApiInTestRepository(
-        countryCode: String,
-        pageNumber: Int
-    ) = apiInterface.getHeadlineNewsInInterface(countryCode, pageNumber)
-//            : ApiCallErrorHandler<NewsDataClass> {
-
-//        return try {
-//            val receivedApiResponse = apiInterface.getHeadlineNewsInInterface(countryCode, pageNumber)
-//            val receivedApiResult = receivedApiResponse.body()
+    suspend fun getHeadlineNews(countryCode : String) : Flow<PagingData<NewsResponse>>
 //
-//            if (receivedApiResponse.isSuccessful && receivedApiResult != null) {
-//                ApiCallErrorHandler.Success(receivedApiResult)
-//            } else {
-//                ApiCallErrorHandler.Error(receivedApiResponse.message())
-//            }
-//        } catch (e: Exception){
-//            ApiCallErrorHandler.Error(e.message ?: " An Error Occurred fetching data from the API ")
-//        }
-//    }
-
-    override suspend fun searchDataFromApiInTestRepository(
-        searchQuery: String,
-        pageNumber: Int
-    ) = apiInterface.getAllNewsForSearchInInterface(searchQuery, pageNumber)
-//    : ApiCallErrorHandler<NewsDataClass> {
-//        return try {
-//            val searchResponse = apiInterface.getAllNewsForSearchInInterface(searchQuery, pageNumber)
-//            val searchResponseBody = searchResponse.body()
+//    suspend fun searchDataFromApiInTestRepository(searchQuery : String, pageNumber: Int) : Response<NewsDataClass>
 //
-//            if (searchResponse.isSuccessful && searchResponseBody != null) {
-//                ApiCallErrorHandler.Success(searchResponseBody)
-//            } else {
-//                ApiCallErrorHandler.Error(searchResponse.message())
-//            }
-//        } catch (e: Exception){
-//            ApiCallErrorHandler.Error(e.message ?: " An Error Occurred fetching data from the API ")
-//        }
-//    }
-
-    override suspend fun upsert(article: Article) {
-        return newsAppDao.upsert(article)
-    }
-
-    override fun getNewsFromDBInMainRepository() : LiveData<List<Article>> {
-        return newsAppDao.getAllDataInDB()
-    }
-
-    override suspend fun deleteNewsInDBFromRepo(article: Article) {
-        return newsAppDao.deleteNewsFromDataBase(article)
-    }
+//    //just pass only data you want to add to DB
+//
+//    suspend fun upsert(article: NewsDataClass.Article)
+//
+//    //Getting data from DB runs on Livedata normally
+//    fun getNewsFromDBInMainRepository() : LiveData<List<NewsDataClass.Article>>
+//
+//    suspend fun deleteNewsInDBFromRepo(article: NewsDataClass.Article)
 }

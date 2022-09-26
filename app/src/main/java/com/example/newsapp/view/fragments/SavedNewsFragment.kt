@@ -31,55 +31,55 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         _binding = FragmentSavedNewsBinding.bind(view)
         setUpRecyclerView()
 
-        //get saved in DB and display it here(remember u add news to DB from FAB in article fragment)
-        viewModel.getDataFromDB().observe(viewLifecycleOwner, Observer {
-            projectAdapter.news = it
-        })
+//        //get saved in DB and display it here(remember u add news to DB from FAB in article fragment)
+//        viewModel.getDataFromDB().observe(viewLifecycleOwner, Observer {
+//            projectAdapter.news = it
+//        })
 
         //implement swipe to delete
 
-        val itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(
-            //direction to drag recyclerview without effect
-        ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-             //direction to drag with effect
-        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        ){
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return true
-            }
+//        val itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(
+//            //direction to drag recyclerview without effect
+//        ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+//             //direction to drag with effect
+//        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+//        ){
+//            override fun onMove(
+//                recyclerView: RecyclerView,
+//                viewHolder: RecyclerView.ViewHolder,
+//                target: RecyclerView.ViewHolder
+//            ): Boolean {
+//                return true
+//            }
+//
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                //get position of list item on recyclerview
+//                val position = viewHolder.adapterPosition
+//                //get data to delete on the position
+//                val dataToDelete = projectAdapter.news[position]
+//                //finally call view model to implement delete
+//                viewModel.deleteDataFromDB(dataToDelete)
+//
+//                //implement undo when u delete
+//                Snackbar.make(
+//                    binding.root,
+//                    "News deleted",
+//                    Snackbar.LENGTH_LONG
+//                ).setAction("UNDO"){
+//                    viewModel.upsert(dataToDelete)
+//                }.show()
+//            }
+//
+//        }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                //get position of list item on recyclerview
-                val position = viewHolder.adapterPosition
-                //get data to delete on the position
-                val dataToDelete = projectAdapter.news[position]
-                //finally call view model to implement delete
-                viewModel.deleteDataFromDB(dataToDelete)
-
-                //implement undo when u delete
-                Snackbar.make(
-                    binding.root,
-                    "News deleted",
-                    Snackbar.LENGTH_LONG
-                ).setAction("UNDO"){
-                    viewModel.upsert(dataToDelete)
-                }.show()
-            }
-
-        }
-
-        ItemTouchHelper(itemTouchHelperCallBack).apply {
-            attachToRecyclerView(binding.saveNewsFragmentRV)
-        }
-
-        projectAdapter.setListItemClickListener {
-            val passData = SavedNewsFragmentDirections.actionSavedNewsFragmentToArticleFragment(it)
-            findNavController().navigate(passData)
-        }
+//        ItemTouchHelper(itemTouchHelperCallBack).apply {
+//            attachToRecyclerView(binding.saveNewsFragmentRV)
+//        }
+//
+//        projectAdapter.setListItemClickListener {
+//            val passData = SavedNewsFragmentDirections.actionSavedNewsFragmentToArticleFragment(it)
+//            findNavController().navigate(passData)
+//        }
     }
 
     private fun setUpRecyclerView(){

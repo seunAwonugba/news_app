@@ -3,10 +3,10 @@ package com.example.newsapp.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.newsapp.dataclass.Article
+import com.example.newsapp.data.remote.NewsDataClass
 import com.example.newsapp.db.typeconverter.TypeConverter
 
-@Database(entities = [Article::class], version = 1)
+@Database(entities = [NewsDataClass.Article::class], version = 1)
 @TypeConverters(TypeConverter::class)
 abstract class NewsAppDataBase : RoomDatabase() {
 
