@@ -27,6 +27,10 @@ class MainViewModel @Inject constructor(
     private val _state: MutableStateFlow<State> = MutableStateFlow(State())
     val state: StateFlow<State> = _state
 
+    init {
+        fetchUserLoans("arsenal")
+    }
+
     fun getHeadlineNews(countryCode : String? = null): Flow<PagingData<NewsResponse>> {
         viewModelScope.launch {
             if (countryCode != null) {
