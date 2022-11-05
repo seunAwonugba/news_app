@@ -1,20 +1,18 @@
 package com.example.newsapp.viewmodel
 
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.newsapp.data.remote.NewsResponseDto
 import com.example.newsapp.data.ui.NewsResponse
+import com.example.newsapp.di.NetworkModule
 import com.example.newsapp.repository.MainRepository
 import com.example.newsapp.utils.Resource
+import com.example.newsapp.utils.updateValue
+import com.example.newsapp.utils.wrapAsResource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,79 +22,42 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _headlineNews = MutableStateFlow<PagingData<NewsResponse>>(PagingData.empty())
-    val headlineNews = _headlineNews
+    private val headlineNews = MutableStateFlow<PagingData<NewsResponse>>(PagingData.empty())
 
-
-    private val _searchNews : MutableLiveData<Resource<NewsResponseDto>> = MutableLiveData()
-    var searchNews : LiveData<Resource<NewsResponseDto>> = _searchNews
-
-//    fun fetchFeaturedCars(): Flow<PagingData<Car>> {
-//        val currentFeaturedCarsPagingFlow = featuredCarsPagingFlow
-//        if (currentFeaturedCarsPagingFlow != null) return currentFeaturedCarsPagingFlow
-//
-//        val newFeaturedCarsPagingFlow = carsInventoryRepository
-//            .getCarsInventoryListing(SelectedFilterValues().copy(featured = true), null)
-//            .cachedIn(viewModelScope)
-//        featuredCarsPagingFlow = newFeaturedCarsPagingFlow
-//
-//        return newFeaturedCarsPagingFlow
-//    }
-
+    private val _state: MutableStateFlow<State> = MutableStateFlow(State())
+    val state: StateFlow<State> = _state
 
     fun getHeadlineNews(countryCode : String? = null): Flow<PagingData<NewsResponse>> {
         viewModelScope.launch {
             if (countryCode != null) {
                 mainRepository.getHeadlineNews(countryCode = countryCode).cachedIn(viewModelScope).collect {
-                    _headlineNews.value = it
+                    headlineNews.value = it
                 }
             }
         }
 
-        return _headlineNews
+        return headlineNews
     }
 
-//    fun getHeadlineNews(countryCode : String){
-//        viewModelScope.launch {
-//            mainRepository.getHeadlineNews(countryCode = countryCode).cachedIn(viewModelScope).collect {
-//                _headlineNews.value = it
-//            }
-//        }
-//    }
+    private fun fetchUserLoans(query : String) {
+        mainRepository
+            .searchNews(query = query)
+            .catch {
+                when (it) {
+                    is NetworkModule.ErrorInterceptor.ServerErrorException -> emit(listOf())
+                    else -> throw it
+                }
+            }
+            .wrapAsResource()
+            .onEach {
+                _state.updateValue { copy(searchNewsRes = it) }
+            }
+            .launchIn(viewModelScope)
+    }
 
-    //Implement the function that now executes API call
-//    private fun getHeadlineNews(countryCode: String){
-//        viewModelScope.launch {
-//            //Before making the network call, lets emit the loading state to live data
-//            _breakingNews.postValue(Resource.Loading())
-//            val breakingNewsResponse = repository.getHeadlineNews(countryCode, newsPagination)
-//            _breakingNews.postValue(breakingNewsApiResponseHandler(breakingNewsResponse))
-//        }
-//    }
+    data class State(val searchNewsRes: Resource<List<NewsResponse>> = Resource.initial())
 
-//    private fun breakingNewsApiResponseHandler(
-//        response: Response<NewsDataClass>
-//    ) : Resource<NewsDataClass>{
-//        val responseBody = response.body()
-//        if(response.isSuccessful && responseBody!=null){
-//            //when response is successful, increase current page number
-//                newsPagination++
-//            //originally receivedBreakingNewsResponse will be null at first load
-//            if (receivedBreakingNewsResponse == null){
-//                receivedBreakingNewsResponse = responseBody
-//            }
-//            else{
-//                val existingFetchedData = receivedBreakingNewsResponse?.articles
-//                val newFetchedData = responseBody.articles
-//                //At this point change from the generated data class property article List<Articles> to
-//                //MutableList<Article>
-//                //So the logic is make all ur checks, and finally add to existing list
-//                existingFetchedData?.addAll(newFetchedData)
-//            }
-//            return Resource.Success(receivedBreakingNewsResponse ?: responseBody)
-//        }
-//        return Resource.Error(response.)
-//    }
+
 
 //    fun searchNewsInVM(searchQuery: String){
 //        viewModelScope.launch {

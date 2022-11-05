@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.newsapp.R
 import com.example.newsapp.databinding.ActivityMainBinding
@@ -32,6 +34,13 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         bottomNav.setupWithNavController(navController)
+
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            NavigationUI.onNavDestinationSelected(it, Navigation.findNavController(binding.fragmentContainerView))
+            Navigation.findNavController(binding.fragmentContainerView)
+                .popBackStack(it.itemId, inclusive = false)
+            true
+        }
 
     }
 }

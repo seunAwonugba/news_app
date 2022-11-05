@@ -8,7 +8,9 @@ import com.example.newsapp.constants.Constants.PAGE_SIZE
 import com.example.newsapp.data.ui.NewsResponse
 import com.example.newsapp.db.NewsAppDao
 import com.example.newsapp.paging.HeadlineNewsPagingSource
+import com.example.newsapp.utils.toNewsResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
@@ -30,13 +32,12 @@ class MainRepositoryImpl @Inject constructor(
         ).flow
     }
 
-
-//    override fun getFeatures(): Flow<PagingData<Features>> {
-//        return Pager(
-//            config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = true),
-//            pagingSourceFactory = { FeaturesPagingSource(webService = webService) })
-//            .flow
-//    }
+    override fun searchNews(query: String): Flow<List<NewsResponse>> {
+        return flow {
+            val response = webService.searchNews(query = query).articles.map { it.toNewsResponse() }
+            emit(response)
+        }
+    }
 
 
     //    override suspend fun searchDataFromApiInTestRepository(

@@ -8,7 +8,7 @@ interface MainRepository {
 
     suspend fun getHeadlineNews(countryCode : String) : Flow<PagingData<NewsResponse>>
 //
-//    suspend fun searchDataFromApiInTestRepository(searchQuery : String, pageNumber: Int) : Response<NewsDataClass>
+    fun searchNews(query : String) : Flow<List<NewsResponse>>
 //
 //    //just pass only data you want to add to DB
 //
