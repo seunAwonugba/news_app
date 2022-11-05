@@ -3,67 +3,42 @@ package com.example.newsapp.di
 import android.content.Context
 import androidx.room.Room
 import com.example.newsapp.api.WebService
-import com.example.newsapp.constants.Constants.BASE_URL
-import com.example.newsapp.constants.Constants.DATABASE_NAME
+import com.example.newsapp.constants.Constants
 import com.example.newsapp.db.NewsAppDao
 import com.example.newsapp.db.NewsAppDataBase
-import com.example.newsapp.repository.MainRepositoryImpl
 import com.example.newsapp.repository.MainRepository
+import com.example.newsapp.repository.MainRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NewsAppModule {
-
-    //Retrofit dependencies
+object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideNewsApiInAppModule(): WebService {
+    fun provideWebService(retrofit: Retrofit) : WebService = retrofit.create()
 
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level= HttpLoggingInterceptor.Level.BODY
-        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
-
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-            .create(WebService::class.java)
-
-    }
-
-
-    /**
-     * Provide repository to be injected into view model
-     */
 
     @Singleton
     @Provides
-    fun provideRepositoryInModule(
+    fun provideMainRepository(
         webService: WebService,
         newsAppDao: NewsAppDao
     ) : MainRepository = MainRepositoryImpl(webService, newsAppDao)
-
-    //Room dependencies
 
     @Singleton
     @Provides
     fun provideMovieAppDataBaseInModule(@ApplicationContext context: Context) = Room.databaseBuilder(
         context,
         NewsAppDataBase::class.java,
-        DATABASE_NAME
+        Constants.DATABASE_NAME
     ).build()
 
     /**
