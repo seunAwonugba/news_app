@@ -3,9 +3,9 @@ package com.example.newsapp.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.newsapp.api.WebService
-import com.example.newsapp.api.toNewsResponse
 import com.example.newsapp.constants.Constants.PAGE_SIZE
 import com.example.newsapp.data.ui.NewsResponse
+import com.example.newsapp.utils.toNewsResponse
 
 class HeadlineNewsPagingSource(
     private val webService: WebService,

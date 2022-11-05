@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
+@kotlinx.serialization.Serializable
 data class NewsDataClass(
     val articles: MutableList<Article>,
     val status: String,
@@ -14,6 +15,7 @@ data class NewsDataClass(
     @Entity(
         tableName = "news_article_table"
     )
+    @kotlinx.serialization.Serializable
     data class Article(
         @PrimaryKey(autoGenerate = true)
         val newsArticleId: Int? = null,
@@ -28,6 +30,7 @@ data class NewsDataClass(
     ) : Parcelable{
 
         @kotlinx.parcelize.Parcelize
+        @kotlinx.serialization.Serializable
         data class Source(
             val id: String?,
             val name: String?
