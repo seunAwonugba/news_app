@@ -1,14 +1,21 @@
 package com.example.newsapp.data.ui
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(
+    tableName = "news_article_table"
+)
 data class NewsResponse(
-    val articleId : Int? = null,
-    val author : String? = null,
-    val content : String? = null,
-    val description : String? = null,
-    val publishedAt : String? = null,
-    val sourceName : String? = null,
-    val sourceId : String? = null,
-    val title : String? = null,
-    val url : String? = null,
-    val image : String? = null
+    @PrimaryKey(autoGenerate = true)
+    val articleId : Int,
+    val author : String,
+    val content : String,
+    val description : String,
+    val publishedAt : String,
+    val sourceName : String,
+    val sourceId : String,
+    val title : String,
+    val url : String,
+    val image : String
 )

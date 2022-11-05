@@ -11,7 +11,7 @@
         android:label="Breaking News"
         tools:layout="@layout/fragment_headline_news" >
         <action
-            android:id="@+id/action_breakingNewsFragment_to_articleFragment"
+            android:id="@+id/headline_to_article"
             app:destination="@id/articleFragment" />
     </fragment>
     <fragment
@@ -40,5 +40,8 @@
 <!--        <argument-->
 <!--            android:name="safeArgsIntent"-->
 <!--            app:argType="com.example.newsapp.dataclass.Article" />-->
+        <argument
+            android:name="newsId"
+            app:argType="string" />
     </fragment>
 </navigation>

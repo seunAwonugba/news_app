@@ -2,15 +2,14 @@ package com.example.newsapp.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.example.newsapp.data.remote.NewsDataClass
-import com.example.newsapp.db.typeconverter.TypeConverter
+import com.example.newsapp.data.ui.NewsResponse
 
-@Database(entities = [NewsDataClass.Article::class], version = 1)
-@TypeConverters(TypeConverter::class)
+//@Database(entities = [NewsResponseDto.Article::class], version = 1)
+@Database(entities = [NewsResponse::class], version = 1)
+//@TypeConverters(TypeConverter::class)
 abstract class NewsAppDataBase : RoomDatabase() {
 
-    abstract fun instanceOfNewsAppDaoInDB(): NewsAppDao
+    abstract fun instanceOfAppDao(): NewsAppDao
 
     /**
      * Now since i'm using DI and its needed for every dependencies like

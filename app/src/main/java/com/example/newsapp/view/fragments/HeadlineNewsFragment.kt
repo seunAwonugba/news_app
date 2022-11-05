@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.adapters.HeadlineNewsLoadStateAdapter
 import com.example.newsapp.adapters.NewsPagingAdapter
+import com.example.newsapp.data.ui.NewsResponse
 import com.example.newsapp.databinding.FragmentHeadlineNewsBinding
+import com.example.newsapp.utils.navController
 import com.example.newsapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -27,50 +29,41 @@ class HeadlineNewsFragment : Fragment(R.layout.fragment_headline_news) {
 
     private val viewModel : MainViewModel by viewModels()
 
-    private lateinit var newsPagingAdapter: NewsPagingAdapter
+    private val newsPagingAdapter by lazy { NewsPagingAdapter(this::handleListItemClick) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentHeadlineNewsBinding.bind(view)
-
-
-        setUpRecyclerView()
-
-
+        pagingState()
         getHeadlineNews()
-
-
-//        projectAdapter.setListItemClickListener {
-//            val passData = BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(it)
-//            findNavController().navigate(passData)
-//        }
-
-
+        val selectedCountry = binding.countryPicker.selectedCountryCode
     }
 
-    private fun setUpRecyclerView(){
-        newsPagingAdapter = NewsPagingAdapter()
+    private fun pagingState(){
         newsPagingAdapter.addLoadStateListener { combinedLoadStates ->
 
-            val errorState = when (combinedLoadStates.refresh) {
-                is LoadState.Error -> { combinedLoadStates.refresh as LoadState.Error }
+            val errorState =
+                when (combinedLoadStates.refresh) { is LoadState.Error -> {
+                    combinedLoadStates.refresh as LoadState.Error
+                }
                 else -> null
             }
             if (errorState != null) {
-                binding.initialLoadErrorText.text = errorState.error.toString()
+                binding.initialLoadErrorText.text = errorState.error.message
             }
 
             binding.apply {
                 initialProgressBar.isVisible = combinedLoadStates.source.refresh is LoadState.Loading
-                breakingNewsRv.isVisible = combinedLoadStates.source.refresh is LoadState.NotLoading
+                headLineNewsRv.isVisible = combinedLoadStates.source.refresh is LoadState.NotLoading
                 binding.initialLoadErrorText.isVisible = combinedLoadStates.source.refresh is LoadState.Error
                 binding.initialLoadErrorRetryBtn.isVisible = combinedLoadStates.source.refresh is LoadState.Error
 
                 //empty state
                 if (combinedLoadStates.source.refresh is LoadState.NotLoading &&
                         combinedLoadStates.append.endOfPaginationReached &&
-                        newsPagingAdapter.itemCount < 1){
-                    breakingNewsRv.isVisible = false
+                        newsPagingAdapter.itemCount < 1
+                ){
+                    headLineNewsRv.isVisible = false
                     emptyStateTextView.isVisible = true
                 }else{
                     emptyStateTextView.isVisible = false
@@ -78,18 +71,17 @@ class HeadlineNewsFragment : Fragment(R.layout.fragment_headline_news) {
             }
         }
 
-        binding.breakingNewsRv.apply {
+        binding.headLineNewsRv.apply {
             adapter = newsPagingAdapter.withLoadStateFooter(
                 footer = HeadlineNewsLoadStateAdapter{newsPagingAdapter.retry()}
             )
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             addItemDecoration(
                 DividerItemDecoration(
-                    binding.breakingNewsRv.context,
+                    binding.headLineNewsRv.context,
                     DividerItemDecoration.VERTICAL
                 )
             )
-
         }
 
         binding.initialLoadErrorRetryBtn.setOnClickListener {
@@ -99,10 +91,15 @@ class HeadlineNewsFragment : Fragment(R.layout.fragment_headline_news) {
 
     private fun getHeadlineNews() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getHeadlineNews("US").collectLatest {
+            viewModel.getHeadlineNews(binding.countryPicker.selectedCountryNameCode).collectLatest {
                 newsPagingAdapter.submitData(it)
             }
         }
+    }
+
+    private fun handleListItemClick(newsResponse: NewsResponse) {
+        val safeArgs = HeadlineNewsFragmentDirections.headlineToArticle(newsResponse.articleId.toString())
+        navController.navigate(safeArgs)
     }
 
     override fun onDestroy() {

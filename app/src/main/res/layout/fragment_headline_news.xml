@@ -4,33 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.HeadlineNewsFragment">
+    tools:context=".view.fragments.HeadlineNewsFragment"
+    android:padding="16dp">
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/breakingNewsRv"
+        android:id="@+id/headLineNewsRv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ProgressBar
         android:id="@+id/initialProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/headLineNewsRv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/headLineNewsRv" />
 
     <Button
         android:id="@+id/initialLoadErrorRetryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retry"
+        tools:text="Retry"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,65 +42,50 @@
         android:id="@+id/initialLoadErrorText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:padding="8dp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/design_default_color_error"        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/breakingNewsRv"
-        app:layout_constraintEnd_toEndOf="@+id/breakingNewsRv"
+        android:textColor="@color/design_default_color_error"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/headLineNewsRv"
+        app:layout_constraintEnd_toEndOf="@+id/headLineNewsRv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/breakingNewsRv"
-        app:layout_constraintVertical_bias="0.496" />
+        app:layout_constraintTop_toTopOf="@+id/headLineNewsRv"
+        app:layout_constraintVertical_bias="0.496"
+        tools:ignore="TextContrastCheck"
+        tools:text="Error" />
 
     <TextView
         android:id="@+id/emptyStateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Empty State"
-        android:textAlignment="center"
-        android:textSize="24sp"
         android:padding="16dp"
-        android:textColor="@color/teal_200"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        android:textColor="#009688"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/headLineNewsRv"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/headLineNewsRv"
+        tools:text="No news at this time" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/headline_news"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <!--    <ProgressBar-->
-<!--        android:id="@+id/appendProgressBar"-->
-<!--        style="?android:attr/progressBarStyle"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginBottom="8dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.501"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/initialErrTv"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Initial loading error"-->
-<!--        android:textColor="@color/red"-->
-<!--        android:textSize="16sp"-->
-<!--        android:textAlignment="center"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/initailRetryBtn"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:text="TextView"-->
-<!--        android:textSize="16sp"-->
-<!--        android:textColor="@color/teal_200"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/initialErrTv"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/initialErrTv"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/initialErrTv" />-->
+    <com.hbb20.CountryCodePicker
+        android:id="@+id/countryPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:ccp_defaultNameCode="US"
+        app:ccp_showPhoneCode="false"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

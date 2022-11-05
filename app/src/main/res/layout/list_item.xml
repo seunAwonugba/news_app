@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:paddingVertical="4dp">
 
 
     <ImageView
@@ -21,20 +21,25 @@
         android:id="@+id/sourceId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Source"
+        android:layout_marginTop="4dp"
         android:textColor="@color/black"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageId"
-        app:layout_constraintWidth_percent=".45" />
+        app:layout_constraintWidth_percent=".45"
+        tools:text="Source" />
 
     <TextView
         android:id="@+id/titleId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="Title"
-        android:textAlignment="center"
+        tools:text="Title"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:textSize="16sp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageId"
@@ -45,22 +50,28 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:text="News Content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageId"
-        app:layout_constraintTop_toBottomOf="@+id/titleId" />
+        app:layout_constraintTop_toBottomOf="@+id/titleId"
+        tools:text="News Content" />
 
     <TextView
         android:id="@+id/publishedAtId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Published at"
+        android:layout_marginTop="4dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sourceId"
-        app:layout_constraintWidth_percent=".45"/>
+        app:layout_constraintWidth_percent=".45"
+        tools:text="Published at" />
 
 
 

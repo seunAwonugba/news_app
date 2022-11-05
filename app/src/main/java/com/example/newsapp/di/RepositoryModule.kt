@@ -35,7 +35,7 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideMovieAppDataBaseInModule(@ApplicationContext context: Context) = Room.databaseBuilder(
+    fun provideDB(@ApplicationContext context: Context) = Room.databaseBuilder(
         context,
         NewsAppDataBase::class.java,
         Constants.DATABASE_NAME
@@ -50,6 +50,6 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideNewsAppDaoInModule(dataBase: NewsAppDataBase) = dataBase.instanceOfNewsAppDaoInDB()
+    fun provideDao(dataBase: NewsAppDataBase) = dataBase.instanceOfAppDao()
 
 }

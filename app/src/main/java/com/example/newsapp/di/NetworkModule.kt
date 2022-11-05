@@ -71,15 +71,17 @@ object NetworkModule {
                     body.toString()
                 }
             } catch (e: JSONException) {
-                // could not parse response body, returning a generic error
-                "An error occurred, please try again later"
+                "Unknown error occurred"
             }
         }
 
         class ServerErrorException(message: String) : IOException(message)
     }
 
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+    }
 
     @ExperimentalSerializationApi
     @Provides

@@ -7,12 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.newsapp.data.remote.NewsDataClass
+import com.example.newsapp.data.remote.NewsResponseDto
 import com.example.newsapp.data.ui.NewsResponse
 import com.example.newsapp.repository.MainRepository
 import com.example.newsapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -29,8 +28,8 @@ class MainViewModel @Inject constructor(
     val headlineNews = _headlineNews
 
 
-    private val _searchNews : MutableLiveData<Resource<NewsDataClass>> = MutableLiveData()
-    var searchNews : LiveData<Resource<NewsDataClass>> = _searchNews
+    private val _searchNews : MutableLiveData<Resource<NewsResponseDto>> = MutableLiveData()
+    var searchNews : LiveData<Resource<NewsResponseDto>> = _searchNews
 
 //    fun fetchFeaturedCars(): Flow<PagingData<Car>> {
 //        val currentFeaturedCarsPagingFlow = featuredCarsPagingFlow
